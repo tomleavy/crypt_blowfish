@@ -8,6 +8,8 @@ enable_testing()
 
 set(BcryptSources crypt_blowfish.c crypt_gensalt.c wrapper.c)
 
+MESSAGE("${CMAKE_SYSTEM_PROCESSOR}")
+
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "^([xX]86)$")
     enable_language(ASM)
     set(BcryptSources ${BcryptSources} x86.S)
@@ -15,7 +17,7 @@ endif(CMAKE_SYSTEM_PROCESSOR MATCHES "^([xX]86)$")
 
 add_library(bcrypt ${BcryptSources})
 
-set(BcryptCompileFlags "-W" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wmissing-prototypes" "-Wstrict-prototypes" "-Wshadow" "-Wundef" "-Wpointer-arith" "-fomit-frame-pointer" "-funroll-loops")
+set(BcryptCompileFlags "-Wall" "-fomit-frame-pointer" "-funroll-loops")
 
 string (REPLACE ";" " " BCRYPT_COMPILE_FLAGS "${BcryptCompileFlags}")
 

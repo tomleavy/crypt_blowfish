@@ -24,11 +24,13 @@
 
 #ifdef TEST
 #include <stdio.h>
-#include <unistd.h>
 #include <signal.h>
 #include <time.h>
+#ifndef _WIN32
+#include <unistd.h>
 #include <sys/time.h>
 #include <sys/times.h>
+#endif
 #ifdef TEST_THREADS
 #include <pthread.h>
 #endif
@@ -403,9 +405,11 @@ static void *run(void *arg)
 
 int main(void)
 {
+#ifndef _WIN32
 	struct itimerval it;
 	struct tms buf;
 	clock_t clk_tck, start_real, start_virtual, end_real, end_virtual;
+#endif
 	unsigned long count;
 	void *data;
 	int size;
@@ -495,10 +499,12 @@ int main(void)
 	free(setting2);
 	free(data);
 
+#ifndef _WIN32
+    
 #if defined(_SC_CLK_TCK) || !defined(CLK_TCK)
-	clk_tck = sysconf(_SC_CLK_TCK);
+    clk_tck = sysconf(_SC_CLK_TCK);
 #else
-	clk_tck = CLK_TCK;
+    clk_tck = CLK_TCK;
 #endif
 
 	running = 1;
@@ -520,6 +526,9 @@ int main(void)
 	printf("%.1f c/s real, %.1f c/s virtual\n",
 		(float)count * clk_tck / (end_real - start_real),
 		(float)count * clk_tck / (end_virtual - start_virtual));
+#else
+    printf("Tests Passed");
+#endif
 
 #ifdef TEST_THREADS
 	running = 1;
