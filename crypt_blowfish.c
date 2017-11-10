@@ -56,7 +56,7 @@
 #ifdef __i386__
 #define BF_ASM				1
 #define BF_SCALE			1
-#elif defined(__x86_64__) || defined(__alpha__) || defined(__hppa__) || defined(__arm__)
+#elif defined(__x86_64__) || defined(__alpha__) || defined(__hppa__) || defined(__arm__) || defined(__ANDROID__)
 #define BF_ASM				0
 #define BF_SCALE			1
 #else
