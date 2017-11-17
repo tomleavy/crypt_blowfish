@@ -28,8 +28,11 @@ install(TARGETS bcrypt EXPORT BcryptConfig
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-install(EXPORT BcryptConfig DESTINATION ${CMAKE_INSTALL_LIBDIR}/libbcrypt/cmake)
-install(FILES "libbcrypt.h" DESTINATION include/libbcrypt)
+install(EXPORT BcryptConfig DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
+
+file(GLOB Headers *.h)
+
+install(FILES ${Headers} DESTINATION include/libbcrypt)
 
 export(TARGETS bcrypt FILE BcryptConfig.cmake)
 
