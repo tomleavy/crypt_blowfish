@@ -4,9 +4,13 @@ include(GNUInstallDirs)
 
 project(libbcrypt VERSION 1.3 LANGUAGES C)
 
-enable_testing()
+if(NOT IOS)
+    enable_testing()
+endif()
 
 set(BcryptSources crypt_blowfish.c crypt_gensalt.c wrapper.c)
+
+Message("${CMAKE_SYSTEM_PROCESSOR}")
 
 if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "i686" OR (MSVC AND NOT "${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)"))
     enable_language(ASM)
@@ -35,10 +39,12 @@ install(FILES ${Headers} DESTINATION include/libbcrypt)
 
 export(TARGETS bcrypt FILE BcryptConfig.cmake)
 
-add_executable(crypt_test wrapper.c)
+if (NOT IOS)
+    add_executable(crypt_test wrapper.c)
 
-target_link_libraries(crypt_test bcrypt)
+    target_link_libraries(crypt_test bcrypt)
 
-set_target_properties(crypt_test PROPERTIES COMPILE_FLAGS "${BCRYPT_COMPILE_FLAGS} -DTEST")
+    set_target_properties(crypt_test PROPERTIES COMPILE_FLAGS "${BCRYPT_COMPILE_FLAGS} -DTEST")
 
-add_test(crypt_test crypt_test)
+    add_test(crypt_test crypt_test)
+endif ()
