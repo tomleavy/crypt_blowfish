@@ -12,8 +12,14 @@ set(BcryptSources crypt_blowfish.c crypt_gensalt.c wrapper.c)
 
 Message("${CMAKE_SYSTEM_PROCESSOR}")
 
-if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "i686" OR (MSVC AND NOT "${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)"))
-    enable_language(ASM)
+if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "i686" OR (WIN32 AND NOT "${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)"))
+    
+    if (NOT WIN32)
+        enable_language(ASM)
+    else()
+        enable_language(ASM_MASM)
+    endif()
+
     set(BcryptSources ${BcryptSources} x86.S)
     Message("Bcrypt: Enabling x86 ASM")
 endif()
